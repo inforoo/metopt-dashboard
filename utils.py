@@ -15,7 +15,7 @@ def tupled(f):
 
 
 def derivative(f, vars):
-    diffs = [tupled(sympy.lambdify(vars, f.diff(var), 'numpy')) for var in vars]
+    diffs = [tupled(sympy.lambdify(vars, f.diff(var), "numpy")) for var in vars]
     return diffs
 
 
@@ -26,7 +26,7 @@ def coefs_from_dict(coefs: dict[str, float]) -> list[float]:
         coefs.get("y^2", 0),
         coefs.get("y", 0),
         coefs.get("xy", 0),
-        coefs.get("1", 0)
+        coefs.get("1", 0),
     ]
 
 
@@ -36,12 +36,13 @@ def gen_func(coefs: np.ndarray | list[float] | dict[str, float]):
 
     def func(t):
         return (
-            coefs[0] * t[0] ** 2 +
-            coefs[1] * t[0] +
-            coefs[2] * t[1] ** 2 +
-            coefs[3] * t[1] +
-            coefs[4] * t[0] * t[1] +
-            coefs[5])
+            coefs[0] * t[0] ** 2
+            + coefs[1] * t[0]
+            + coefs[2] * t[1] ** 2
+            + coefs[3] * t[1]
+            + coefs[4] * t[0] * t[1]
+            + coefs[5]
+        )
 
     return func
 
@@ -56,7 +57,7 @@ def R2_derivatives(coefs: np.ndarray | list[float] | dict[str, float]):
     ]
 
 
-def plot_func(f, path=(), limit=10, label=''):
+def plot_func(f, path=(), limit=10, label=""):
     if len(path) == 0:
         xmin = -limit
         xmax = limit
@@ -102,22 +103,37 @@ def plot_func(f, path=(), limit=10, label=''):
 
     fig.update_scenes(zaxis=dict(range=[-limit, +limit]))
     # Add the path as a scatter plot on the surface plot
-    fig.add_trace(go.Scatter3d(x=path_x, y=path_y, z=path_z,
-                               mode='markers+lines', marker=dict(size=5),
-                               name='Path'))
+    fig.add_trace(
+        go.Scatter3d(
+            x=path_x,
+            y=path_y,
+            z=path_z,
+            mode="markers+lines",
+            marker=dict(size=5),
+            name="Path",
+        )
+    )
 
-    fig.update_layout(title=label, autosize=False,
-                      width=500, height=500,
-                      margin=dict(l=65, r=50, b=65, t=90))
+    fig.update_layout(
+        title=label,
+        autosize=False,
+        width=500,
+        height=500,
+        margin=dict(l=65, r=50, b=65, t=90),
+    )
 
     # color bar limit
-    fig.update_coloraxes(colorbar=dict(title='Z value', tickvals=[-limit, 0, limit], ticktext=[-limit, 0, limit]))
+    fig.update_coloraxes(
+        colorbar=dict(
+            title="Z value", tickvals=[-limit, 0, limit], ticktext=[-limit, 0, limit]
+        )
+    )
 
     # latex function label
-    fig.update_layout(scene=dict(xaxis_title='x',
-                                 yaxis_title='y',
-                                 zaxis_title='z'),
-                      scene_aspectmode='cube')
+    fig.update_layout(
+        scene=dict(xaxis_title="x", yaxis_title="y", zaxis_title="z"),
+        scene_aspectmode="cube",
+    )
 
     return fig
 
@@ -150,10 +166,10 @@ def plot_func_with_path_matplotlib(f, path, limit=10):
 
     # Create a 3D figure
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(111, projection="3d")
 
     # Plot the surface
-    ax.plot_surface(X, Y, Z, cmap='viridis', edgecolor='none')
+    ax.plot_surface(X, Y, Z, cmap="viridis", edgecolor="none")
 
     # Extract x, y, and z coordinates from the path
     path_x = [point[0] for point in path]
@@ -161,14 +177,14 @@ def plot_func_with_path_matplotlib(f, path, limit=10):
     path_z = [f(point) for point in path]
 
     # Plot the path
-    ax.scatter(path_x, path_y, np.array(path_z), color='r', s=10)  # Red dots
-    ax.plot(path_x, path_y, path_z, color='r')  # Connect dots with red line
+    ax.scatter(path_x, path_y, np.array(path_z), color="r", s=10)  # Red dots
+    ax.plot(path_x, path_y, path_z, color="r")  # Connect dots with red line
 
     # Set labels and title
-    ax.set_xlabel('X Axis')
-    ax.set_ylabel('Y Axis')
-    ax.set_zlabel('Z Axis')
-    ax.set_title('3D Function Plot with Path')
+    ax.set_xlabel("X Axis")
+    ax.set_ylabel("Y Axis")
+    ax.set_zlabel("Z Axis")
+    ax.set_title("3D Function Plot with Path")
 
     plt.show()
 
@@ -188,21 +204,21 @@ def plot_2d_with_color(f, path=(), limit=10):
     plt.figure()
 
     # Plot the function values with color
-    plt.contourf(X, Y, Z, levels=100, cmap='viridis')
-    plt.colorbar(label='Z value')
+    plt.contourf(X, Y, Z, levels=100, cmap="viridis")
+    plt.colorbar(label="Z value")
 
     # Extract x and y coordinates from the path
     path_x = [point[0] for point in path]
     path_y = [point[1] for point in path]
 
     # Plot the path
-    plt.scatter(path_x, path_y, color='r', s=50)  # Red dots
-    plt.plot(path_x, path_y, color='r')  # Connect dots with red line
+    plt.scatter(path_x, path_y, color="r", s=50)  # Red dots
+    plt.plot(path_x, path_y, color="r")  # Connect dots with red line
 
     # Set labels and title
-    plt.xlabel('X Axis')
-    plt.ylabel('Y Axis')
-    plt.title('2D Function Plot with Path and Color')
+    plt.xlabel("X Axis")
+    plt.ylabel("Y Axis")
+    plt.title("2D Function Plot with Path and Color")
 
     plt.show()
 
@@ -239,18 +255,22 @@ def create_gradient_colormap(n_colors):
     return cmap
 
 
-def plot_2d_and_3d_side_by_side(f, path, limit=10, title='', save=False, issimplex=False, text=''):
+def plot_2d_and_3d_side_by_side(
+    f, path, limit=10, title="", save=False, issimplex=False, text=""
+):
     x = np.linspace(-limit, limit, 100)
     y = np.linspace(-limit, limit, 100)
     X, Y = np.meshgrid(x, y)
     Z = f([X, Y])
 
-    fig = plt.figure(figsize=(25, 8))  # Adjusted figure size to accommodate the third plot
+    fig = plt.figure(
+        figsize=(25, 8)
+    )  # Adjusted figure size to accommodate the third plot
 
     # 2D plot
     ax1 = fig.add_subplot(131)
-    contour = ax1.contourf(X, Y, Z, levels=100, cmap='viridis')
-    fig.colorbar(contour, ax=ax1, label='Z value')
+    contour = ax1.contourf(X, Y, Z, levels=100, cmap="viridis")
+    fig.colorbar(contour, ax=ax1, label="Z value")
 
     if issimplex:
         cmap = create_gradient_colormap(len(path))
@@ -258,44 +278,55 @@ def plot_2d_and_3d_side_by_side(f, path, limit=10, title='', save=False, issimpl
             triangle_points = [point for point in simplex]
             x_points = [point[0] for point in triangle_points]
             y_points = [point[1] for point in triangle_points]
-            x_points.append(triangle_points[0][0])  # Closing the triangle by adding the first point at the end
+            x_points.append(
+                triangle_points[0][0]
+            )  # Closing the triangle by adding the first point at the end
             y_points.append(triangle_points[0][1])
             ax1.plot(x_points, y_points, color=cmap(i / 9), alpha=0.5)
     elif len(path) > 0:
         path_x = [point[0] for point in path]
         path_y = [point[1] for point in path]
-        ax1.scatter(path_x, path_y, color='r', s=50)
-        ax1.plot(path_x, path_y, color='r')
+        ax1.scatter(path_x, path_y, color="r", s=50)
+        ax1.plot(path_x, path_y, color="r")
 
-    ax1.set_xlabel('X Axis')
-    ax1.set_ylabel('Y Axis')
+    ax1.set_xlabel("X Axis")
+    ax1.set_ylabel("Y Axis")
     ax1.set_title(title)
 
     # 3D plot
-    ax2 = fig.add_subplot(132, projection='3d')
-    ax2.plot_surface(X, Y, Z, cmap='viridis', edgecolor='none', alpha=0.2)
+    ax2 = fig.add_subplot(132, projection="3d")
+    ax2.plot_surface(X, Y, Z, cmap="viridis", edgecolor="none", alpha=0.2)
     if issimplex:
         cmap = create_gradient_colormap(len(path))
         for i, simplex in enumerate(path):
             triangle_points = [[point[0], point[1], f(point)] for point in simplex]
-            triangle = Poly3DCollection([np.array(triangle_points)], color=cmap(i / 9), alpha=0.5)
+            triangle = Poly3DCollection(
+                [np.array(triangle_points)], color=cmap(i / 9), alpha=0.5
+            )
             ax2.add_collection3d(triangle)
     elif len(path) > 0:
         path_z = np.array([f(point) for point in path]).flatten()
-        ax2.scatter(path_x, path_y, path_z, color='r', s=50)
-        ax2.plot(path_x, path_y, path_z, color='r')
-    ax2.set_xlabel('X Axis')
-    ax2.set_ylabel('Y Axis')
-    ax2.set_zlabel('Z Axis')
+        ax2.scatter(path_x, path_y, path_z, color="r", s=50)
+        ax2.plot(path_x, path_y, path_z, color="r")
+    ax2.set_xlabel("X Axis")
+    ax2.set_ylabel("Y Axis")
+    ax2.set_zlabel("Z Axis")
 
     # Text block plot
     ax3 = fig.add_subplot(133)
-    ax3.axis('off')
-    ax3.text(0.5, 0.5, text, ha='center', va='center', fontsize=12,
-             bbox={'facecolor': 'white', 'alpha': 0.5, 'pad': 10})
+    ax3.axis("off")
+    ax3.text(
+        0.5,
+        0.5,
+        text,
+        ha="center",
+        va="center",
+        fontsize=12,
+        bbox={"facecolor": "white", "alpha": 0.5, "pad": 10},
+    )
 
     plt.tight_layout()
     if save:
-        plt.savefig(f'images/{title}.png')
+        plt.savefig(f"images/{title}.png")
     else:
         plt.show()

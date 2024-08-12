@@ -13,7 +13,7 @@ def gradient_descent_(
     learning_rate_function: LearningRateFunction,
     max_iter: int = 1000,
     stop_point_delta: float = 1e-10,
-    stop_function_delta: float = 1e-10
+    stop_function_delta: float = 1e-10,
 ):
     return gradient_descend(
         fs.lambdify(func),
@@ -22,7 +22,7 @@ def gradient_descent_(
         learning_rate_function=learning_rate_function,
         max_iter=max_iter,
         stop_point_delta=stop_point_delta,
-        stop_function_delta=stop_function_delta
+        stop_function_delta=stop_function_delta,
     )
 
 
@@ -32,7 +32,7 @@ def scipy_nelder_mead_(
     learning_rate_function: LearningRateFunction,
     max_iter: int = 1000,
     stop_point_delta: float = 1e-10,
-    stop_function_delta: float = 1e-10
+    stop_function_delta: float = 1e-10,
 ):
     return scipy_nelder_mead(
         fs.lambdify(func),
@@ -47,7 +47,7 @@ def newton_descent_classic_next_point(
     learning_rate_function: LearningRateFunction,
     max_iter: int = 1000,
     stop_point_delta: float = 1e-10,
-    stop_function_delta: float = 1e-10
+    stop_function_delta: float = 1e-10,
 ):
     return newton_descend(
         fs.lambdify(func),
@@ -58,7 +58,7 @@ def newton_descent_classic_next_point(
         start=start_point,
         max_iter=max_iter,
         stop_point_delta=stop_point_delta,
-        stop_function_delta=stop_function_delta
+        stop_function_delta=stop_function_delta,
     )
 
 
@@ -68,7 +68,7 @@ def newton_descent_linalg_next_point(
     learning_rate_function: LearningRateFunction,
     max_iter: int = 1000,
     stop_point_delta: float = 1e-10,
-    stop_function_delta: float = 1e-10
+    stop_function_delta: float = 1e-10,
 ):
     return newton_descend(
         fs.lambdify(func),
@@ -79,7 +79,7 @@ def newton_descent_linalg_next_point(
         start=start_point,
         max_iter=max_iter,
         stop_point_delta=stop_point_delta,
-        stop_function_delta=stop_function_delta
+        stop_function_delta=stop_function_delta,
     )
 
 
@@ -89,7 +89,7 @@ def scipy_newton_(
     learning_rate_function: LearningRateFunction,
     max_iter: int = 1000,
     stop_point_delta: float = 1e-10,
-    stop_function_delta: float = 1e-10
+    stop_function_delta: float = 1e-10,
 ):
     res = scipy_newton_cg(
         fs.lambdify(func),
@@ -110,7 +110,7 @@ def grad_desc_and_then_classic_newton(
     learning_rate_function: LearningRateFunction,
     max_iter: int = 1000,
     stop_point_delta: float = 1e-10,
-    stop_function_delta: float = 1e-10
+    stop_function_delta: float = 1e-10,
 ):
     return gradient_and_newton(
         fs.lambdify(func),
@@ -122,7 +122,7 @@ def grad_desc_and_then_classic_newton(
         learning_rate_function=learning_rate_function,
         max_iter=max_iter,
         stop_point_delta=stop_point_delta,
-        stop_function_delta=stop_function_delta
+        stop_function_delta=stop_function_delta,
     )
 
 
@@ -132,7 +132,7 @@ def pylbfgs_lbfgs_(
     learning_rate_function: LearningRateFunction,
     max_iter: int = 1000,
     stop_point_delta: float = 1e-10,
-    stop_function_delta: float = 1e-10
+    stop_function_delta: float = 1e-10,
 ):
     return pylbfgs_lbfgs(
         fs.lambdify(func),

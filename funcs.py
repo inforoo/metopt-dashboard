@@ -17,10 +17,12 @@ def hessian(f: sp.Expr) -> Callable[[Point], np.ndarray]:
 
 def lambdify(f: sp.Expr) -> Callable[[Point], float]:
     def lambdified(x):
-        lam = f.evalf(subs={k: v for k, v in zip(sorted(list(f.free_symbols), key=str), x)})
+        lam = f.evalf(
+            subs={k: v for k, v in zip(sorted(list(f.free_symbols), key=str), x)}
+        )
 
         if lam.is_Matrix:
-            return np.array(lam).astype('float64')
+            return np.array(lam).astype("float64")
 
         return np.float64(lam)
 
@@ -33,4 +35,4 @@ def jacobi(f: sp.Expr) -> Callable[[Point], np.ndarray]:
 
 
 def from_sympy_to_plotable_func(f):
-    return tupled(np.vectorize(sympy.lambdify(sympy.symbols('x y'), f, 'numpy')))
+    return tupled(np.vectorize(sympy.lambdify(sympy.symbols("x y"), f, "numpy")))

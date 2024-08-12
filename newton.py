@@ -11,7 +11,7 @@ def calculate_next_point_classic(
     lr: LearningRateFunction,
     last_point: Point,
     gradient: np.ndarray,
-    hessian: np.ndarray
+    hessian: np.ndarray,
 ) -> Point:
     grad = np.linalg.inv(hessian) @ np.transpose(gradient)
     return last_point - lr(0, 1, f, last_point, grad) * grad
@@ -22,7 +22,7 @@ def calculate_next_point_linear_system(
     lr: LearningRateFunction,
     last_point: Point,
     gradient: np.ndarray,
-    hessian: np.ndarray
+    hessian: np.ndarray,
 ) -> Point:
     delta_x = np.linalg.solve(hessian, gradient)
     return last_point - delta_x
@@ -41,7 +41,9 @@ def newton_descend(
 ) -> NewtonOptimizationResult:
     # todo вынести копипасту
     if (stop_function_delta is not None) and stop_function_delta < 0:
-        raise ValueError("Условие останова по значениям функции должно быть положительным")
+        raise ValueError(
+            "Условие останова по значениям функции должно быть положительным"
+        )
     if (stop_point_delta is not None) and stop_point_delta < 0:
         raise ValueError("Условие останова по точкам должно быть положительным")
 
@@ -49,18 +51,24 @@ def newton_descend(
     stop_reason = StopReason.ITERATIONS
 
     for _ in range(max_iter):
-        new_point = calculate_next_point_func(func, learning_rate_function, path[-1], jac(path[-1]), hess(path[-1]))
+        new_point = calculate_next_point_func(
+            func, learning_rate_function, path[-1], jac(path[-1]), hess(path[-1])
+        )
         path.append(new_point)
 
         if np.isnan(new_point).any():
             stop_reason = StopReason.NAN
             break
 
-        if (stop_function_delta is not None) and abs(func(path[-1]) - func(path[-2])) < stop_function_delta:
+        if (stop_function_delta is not None) and abs(
+            func(path[-1]) - func(path[-2])
+        ) < stop_function_delta:
             stop_reason = StopReason.FUNCTION_DELTA
             break
 
-        if (stop_point_delta is not None) and np.linalg.norm(path[-1] - path[-2]) < stop_point_delta:
+        if (stop_point_delta is not None) and np.linalg.norm(
+            path[-1] - path[-2]
+        ) < stop_point_delta:
             stop_reason = StopReason.POINT_DELTA
             break
 
@@ -69,22 +77,31 @@ def newton_descend(
         result=path[-1],
         iterations=len(path) - 1,
         success=stop_reason != StopReason.ITERATIONS,
-        stop_reason=stop_reason
+        stop_reason=stop_reason,
     )
 
 
-def scipy_newton_cg(f: RFunction, jac, hessian, x0: Point, max_iterations=1000, verbose=True):
+def scipy_newton_cg(
+    f: RFunction, jac, hessian, x0: Point, max_iterations=1000, verbose=True
+):
     res = scipy.optimize.minimize(
-        f, x0, jac=jac,
-        method='Newton-CG', options={'xtol': 1e-8,
-                                     'disp': False,
-                                     'return_all': True,
-                                     'maxiter': max_iterations}
+        f,
+        x0,
+        jac=jac,
+        method="Newton-CG",
+        options={
+            "xtol": 1e-8,
+            "disp": False,
+            "return_all": True,
+            "maxiter": max_iterations,
+        },
     )
     return NewtonOptimizationResult(
-        path=[x0] + res.allvecs, result=res.x, iterations=res.nit,
+        path=[x0] + res.allvecs,
+        result=res.x,
+        iterations=res.nit,
         stop_reason=res.message,
-        success=res.success
+        success=res.success,
     )
 
 
@@ -110,8 +127,9 @@ def pylbfgs_lbfgs(
     res = l.minimize(fg, x0, callback)
 
     return DescentOptimizationResult(
-        res, iters[0],
+        res,
+        iters[0],
         stop_reason=StopReason.ITERATIONS,
         success=True,
-        path=path + [res]
+        path=path + [res],
     )
