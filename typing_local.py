@@ -7,11 +7,15 @@ import sympy
 
 Point = np.ndarray
 Vector = np.ndarray
-LearningRateFunction = Callable[[float, float, Callable[[Point], float], Point, Point], float]
+LearningRateFunction = Callable[
+    [float, float, Callable[[Point], float], Point, Point], float
+]
 LearningRateFactoryFunction = Callable[[float], LearningRateFunction]
 RFunction = Callable[[Point], float]
 
-NewtonNextPointFunction = Callable[[RFunction, LearningRateFunction, Point, np.ndarray, np.ndarray], Point]
+NewtonNextPointFunction = Callable[
+    [RFunction, LearningRateFunction, Point, np.ndarray, np.ndarray], Point
+]
 
 
 class StopReason(Enum):
@@ -56,6 +60,20 @@ class NewtonOptimizationResult(DescentOptimizationResult):
     pass
 
 
-MinimizeSympyFunction = Callable[[sympy.Expr, Point, LearningRateFunction, int, float, float], OptimizationResult]
-NewtonFunction = Callable[[RFunction, NewtonNextPointFunction, Callable[[Point], np.ndarray],
-                           Callable[[Point], np.ndarray], Point, LearningRateFunction, int, float, float], GradientOptimizationResult]
+MinimizeSympyFunction = Callable[
+    [sympy.Expr, Point, LearningRateFunction, int, float, float], OptimizationResult
+]
+NewtonFunction = Callable[
+    [
+        RFunction,
+        NewtonNextPointFunction,
+        Callable[[Point], np.ndarray],
+        Callable[[Point], np.ndarray],
+        Point,
+        LearningRateFunction,
+        int,
+        float,
+        float,
+    ],
+    GradientOptimizationResult,
+]
